@@ -11,14 +11,25 @@ def main(filename, r):
     img = Image.open(filename)
     img.load()
 
-    a = np.array(img.getdata(), dtype=np.uint8).reshape(img.size[::-1])
+    a = np.array(img.getdata(), dtype=np.uint8)
+    a = a[:,0]
+    a = a.reshape(img.size[::-1])
     b = np.zeros(img.size[::-1], dtype=np.uint8)
  
-   # код сюда ....
+    # код сюда ....
+    #numpix[x] - кол-во пикселей цвета x
+    #numpix = img.histogram()
+    #sum(numpix) or img.size[0]*img.size[1]
 
+    h,w = a.shape
+    numpix = img.histogram()
+    
+    for i in range(h):
+        for j in range(w):
+            b[i][j]=(np.sum(numpix[:a[i][j]:])/a.size)*256 
     
     newimg = Image.fromarray(b);
-    newimg.show()
+    #newimg.show()
     newimg.save(filename+'.equalized.png')
 
 
